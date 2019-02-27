@@ -156,12 +156,12 @@ def users_show(user_id):
 @app.route('/users/<int:user_id>/following')
 def show_following(user_id):
     """Show list of people this user is following."""
-
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
     user = User.query.get_or_404(user_id)
+    import pdb; pdb.set_trace()
     return render_template('users/following.html', user=user)
 
 
