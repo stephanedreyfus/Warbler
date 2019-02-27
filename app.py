@@ -144,7 +144,6 @@ def users_show(user_id):
     """Show user profile."""
 
     user = User.query.get_or_404(user_id)
-
     # snagging messages in order from the database;
     # user.messages won't be in order by default
     messages = (Message
@@ -153,6 +152,7 @@ def users_show(user_id):
                 .order_by(Message.timestamp.desc())
                 .limit(100)
                 .all())
+
     return render_template('users/show.html',
                            user=user,
                            messages=messages)
@@ -321,9 +321,14 @@ def homepage():
     - logged in: 100 most recent messages of followees
     """
 
+    user_id = g.user.id
+
     if g.user:
+        following_ids = [follower.id for follower in g.user.following] + [user_id]
+
         messages = (Message
                     .query
+                    .filter(Message.user_id.in_(following_ids))
                     .order_by(Message.timestamp.desc())
                     .limit(100)
                     .all())
