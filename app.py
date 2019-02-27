@@ -321,10 +321,8 @@ def homepage():
     - logged in: 100 most recent messages of followees
     """
 
-    user_id = g.user.id
-
     if g.user:
-        following_ids = [follower.id for follower in g.user.following] + [user_id]
+        following_ids = [f.id for f in g.user.following] + [g.user.id]
 
         messages = (Message
                     .query
