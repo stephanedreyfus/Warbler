@@ -144,6 +144,7 @@ def users_show(user_id):
     """Show user profile."""
 
     user = User.query.get_or_404(user_id)
+    import pdb; pdb.set_trace()
 
     # snagging messages in order from the database;
     # user.messages won't be in order by default
@@ -153,7 +154,9 @@ def users_show(user_id):
                 .order_by(Message.timestamp.desc())
                 .limit(100)
                 .all())
-    return render_template('users/show.html', user=user, messages=messages)
+    return render_template('users/show.html',
+                           user=user,
+                           messages=messages)
 
 
 @app.route('/users/<int:user_id>/following')
@@ -217,21 +220,23 @@ def profile():
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    
+
     form = UserEditForm(obj=g.user)
 
     if form.validate_on_submit():
         g.user.location = form.location.data
         g.user.bio = form.bio.data
-        g.user.header_image = form.header_image.data
+        g.user.header_image_url = form.header_image_url.data
 
-        import pdb; pdb.set_trace()
         db.session.commit()
-    
+
         return redirect(f"/users/{g.user.id}")
-    
-    else: 
-        return render_template('/users/edit.html', form=form, user_id=g.user.id)
+
+    else:
+        return render_template('/users/edit.html',
+                               form=form,
+                               user_id=g.user.id)
+
 
 @app.route('/users/delete', methods=["POST"])
 def delete_user():
