@@ -26,10 +26,12 @@ class LoginForm(FlaskForm):
 
 
 class UserEditForm(FlaskForm):
-    """ Form for editing user pages. """ 
+    """ Form for editing user pages. """
 
-    location = StringField('Location', validators=[Optional(), Length(max=(40), message="Must be less than 40 characters.")])
-    bio = TextAreaField('Bio', validators=[Optional(), Length(max=(300), message="Must be less than 300 characters.")])
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    image_url = StringField('(Optional) Image URL')
     header_image_url = StringField('Header Image', validators=[Optional(), URL()])
+    bio = TextAreaField('Bio', validators=[Optional(), Length(max=(300), message="Must be less than 300 characters.")])
+    location = StringField('Location', validators=[Optional(), Length(max=(40), message="Must be less than 40 characters.")])
     password = PasswordField('Password', validators=[Length(min=6)])
-    # email = StringField('Email', validators=[DataRequired(), Email()])

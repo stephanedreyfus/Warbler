@@ -144,7 +144,6 @@ def users_show(user_id):
     """Show user profile."""
 
     user = User.query.get_or_404(user_id)
-    import pdb; pdb.set_trace()
 
     # snagging messages in order from the database;
     # user.messages won't be in order by default
@@ -223,7 +222,9 @@ def profile():
 
     form = UserEditForm(obj=g.user)
 
-    if form.validate_on_submit():
+    valid_pwd = User.authenticate(g.user.username, form.password.data)
+
+    if form.validate_on_submit() and valid_pwd:
         g.user.location = form.location.data
         g.user.bio = form.bio.data
         g.user.header_image_url = form.header_image_url.data
@@ -232,7 +233,12 @@ def profile():
 
         return redirect(f"/users/{g.user.id}")
 
+    elif form.validate_on_submit() and not valid_pwd:
+        flash("Incorrect Password!")
+        return redirect('/')
+
     else:
+
         return render_template('/users/edit.html',
                                form=form,
                                user_id=g.user.id)
