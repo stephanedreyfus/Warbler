@@ -38,6 +38,7 @@ def add_user_to_g():
 
     else:
         g.user = None
+    print(f"g.user={g.user}")
 
 
 def do_login(user):
