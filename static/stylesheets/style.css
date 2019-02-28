@@ -283,8 +283,8 @@ nav + .container {
   background-color: #e6ecf0;
 }
 
-.like-btn {
-  z-index: 3;
+#like-btns {
+  z-index: 2;
 }
 
 #sidebar-username {

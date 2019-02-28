@@ -17,6 +17,19 @@
             <span class="text-muted">{{ message.timestamp.strftime('%d %B %Y') }}</span>
             <p>{{ message.text }}</p>
           </div>
+          <div id="like-btns">
+              {% if message.user.id != g.user.id %}
+                {% if message.is_liked_by(g.user) %}
+                  <form method="POST" action="/messages/{{ message.id }}/likes">
+                    <button class="btn btn-outline-primary btn-sm"><i class="fas fa-smile"></i></button>
+                  </form>
+                {% else %}
+                  <form method="POST" action="/messages/{{ message.id }}/likes">
+                    <button class="btn btn-outline-primary btn-sm"><i class="far fa-frown"></i></button>
+                  </form>
+                {% endif %}
+              {% endif %}
+            </div>
         </li>
 
       {% endfor %}
