@@ -14,6 +14,15 @@
             <div class="message-heading">
               <a href="/users/{{ message.user.id }}">@{{ message.user.username }}</a>
               {% if g.user %}
+                {% if like.user_id == g.user.id and message.user_ud != g.user.id %}
+                <form method="POST" action="/users/{{ g.user.id }}/likes">
+                  <button class="btn btn-outline-primary btn-sm"><i class="fas fa-smile"></i></button>
+                </form>
+                {% else %}
+                <form method="POST" action="/users/{{ g.user.id }}/likes">
+                  <button class="btn btn-outline-primary btn-sm"><i class="far fa-frown"></i></button>
+                </form>
+                {% endif %}
                 {% if g.user.id == message.user.id %}
                   <form method="POST"
                         action="/messages/{{ message.id }}/delete">
@@ -28,15 +37,6 @@
                   <form method="POST" action="/users/follow/{{ message.user.id }}">
                     <button class="btn btn-outline-primary btn-sm">Follow</button>
                   </form>
-                {% endif %}
-                {% if Liked.user_id ==  g.user.id %}
-                <form method="POST" action="/users/{{ g.user.id }}/likes">
-                  <button class="btn btn-outline-primary btn-sm">FILLED LIKE ICON</button>
-                </form>
-                {% else %}
-                <form method="POST" action="/users/{{ g.user.id }}/likes">
-                  <button class="btn btn-outline-primary btn-sm">EMPTY LIKE ICON</button>
-                </form>
                 {% endif %}
               {% endif %}
             </div>

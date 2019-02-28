@@ -167,6 +167,12 @@ class Message(db.Model):
         nullable=False,
     )
 
+    def is_liked_by(self, like):
+        """Is this message likes by `user`?"""
+
+        found_user_list = [user for user in self.followers if user == other_user]
+        return len(found_user_list) == 1
+
 
 class Like(db.Model):
     """ An individual 'like'. """

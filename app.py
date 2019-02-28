@@ -5,7 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 
 from forms import UserAddForm, LoginForm, MessageForm, UserEditForm
-from models import db, connect_db, User, Message
+from models import db, connect_db, User, Message, Like
 
 CURR_USER_KEY = "curr_user"
 
@@ -291,8 +291,10 @@ def messages_add():
 def messages_show(message_id):
     """Show a message."""
 
+    like = Like.query.get(message_id)
+
     msg = Message.query.get(message_id)
-    return render_template('messages/show.html', message=msg)
+    return render_template('messages/show.html', message=msg, like=like)
 
 
 @app.route('/messages/<int:message_id>/delete', methods=["POST"])
@@ -308,9 +310,6 @@ def messages_destroy(message_id):
     db.session.commit()
 
     return redirect(f"/users/{g.user.id}")
-
-
-
 
 
 ##############################################################################
