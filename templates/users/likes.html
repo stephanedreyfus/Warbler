@@ -3,35 +3,19 @@
   <div class="col-sm-9">
     <div class="row">
 
-      {% for followee in user.following %}
+      {% for like in user.likes %}
 
-        <div class="col-lg-4 col-md-6 col-12">
-          <div class="card user-card">
-            <div class="card-inner">
-              <div class="image-wrapper">
-                <img src="{{ followee.header_image_url }}" alt="" class="card-hero">
-              </div>
-              <div class="card-contents">
-                <a href="/users/{{ followee.id }}" class="card-link">
-                  <img src="{{ followee.image_url }}" alt="Image for {{ followee.username }}" class="card-image">
-                  <p>@{{ followee.username }}</p>
-                </a>
-                {% if g.user.is_following(followee) %}
-                  <form method="POST"
-                        action="/users/stop-following/{{ followee.id }}">
-                    <button class="btn btn-primary btn-sm">Unfollow</button>
-                  </form>
-                {% else %}
-                  <form method="POST" action="/users/follow/{{ followee.id }}">
-                    <button class="btn btn-outline-primary btn-sm">Follow</button>
-                  </form>
-                {% endif %}
-
-              </div>
-              <p class="card-bio">{{ followee.bio }}E</p>
+          <li class="list-group-item">
+            <a href="/messages/{{ like.message_id  }}" class="message-link"/>
+            <a href="/users/{{ like.user_id }}">
+              <img src="{{ user.image_url }}" alt="" class="timeline-image">
+            </a>
+            <div class="message-area">
+              <a href="/users/{{ user.id }}">@{{ user.username }}</a>
+              <span class="text-muted">{{ liked_message.timestamp.strftime('%d %B %Y') }}</span>
+              <p>{{ liked_message.text }}</p>
             </div>
-          </div>
-        </div>
+          </li>
 
       {% endfor %}
 
