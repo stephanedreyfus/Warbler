@@ -29,6 +29,15 @@
                     <button class="btn btn-outline-primary btn-sm">Follow</button>
                   </form>
                 {% endif %}
+                {% if Liked.user_id ==  g.user.id %}
+                <form method="POST" action="/users/{{ g.user.id }}/likes">
+                  <button class="btn btn-outline-primary btn-sm">FILLED LIKE ICON</button>
+                </form>
+                {% else %}
+                <form method="POST" action="/users/{{ g.user.id }}/likes">
+                  <button class="btn btn-outline-primary btn-sm">EMPTY LIKE ICON</button>
+                </form>
+                {% endif %}
               {% endif %}
             </div>
             <p class="single-message">{{ message.text }}</p>
