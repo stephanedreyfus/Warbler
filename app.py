@@ -330,10 +330,19 @@ def handles_likes(message_id):
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-  
-    curr_message = Message.query.get(message_id)
 
-    return render_template(f'/users/{g.user.id}/likes', liked_message=curr_message)
+    like = Like.query.filter_by(user_id=g.user.id, message_id=message_id).first()
+
+    if like:
+        db.session.delete(like)
+        db.session.commit()
+
+    else:
+        new_like = Like(user_id=g.user.id, message_id=message_id)
+        db.session.add(new_like)
+        db.session.commit()
+
+    return redirect(f"/users/{g.user.id}/likes")
 
 
 
