@@ -261,6 +261,32 @@ def delete_user():
     return redirect("/signup")
 
 
+@app.route('/users/<int:user_id>/likes', methods=["POST"])
+def handles_likes(user_id):
+    """ Will add or remove likes from message. """
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+    message_ids = [m.message_id for m in g.user.likes]
+    message_id = request.form['hidden_message_id']
+    like = Like.query.get(Like.message_id)
+
+    # check if user has liked message
+    if message_id in message_ids:
+        #remove it
+        db.session.delete(like)
+        db.session.commit()
+
+    # else add message
+    else: 
+        new_like = Like(user_id=g.user.id, message_id=message_id)
+        db.session.add(new_like)
+        db.session.commit()
+    
+    return redirect('/users/{user_id}>/likes')
+
 ##############################################################################
 # Messages routes:
 
