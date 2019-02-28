@@ -261,31 +261,16 @@ def delete_user():
     return redirect("/signup")
 
 
-@app.route('/users/<int:user_id>/likes', methods=["POST"])
-def handles_likes(user_id):
-    """ Will add or remove likes from message. """
-
+@app.route('/users/<int:user_id>/likes', methods=["GET", "POST"])
+def show_liked_messages(user_id):
+    """ Shows page of liked messsages and handles liking of messages. """
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    message_ids = [m.message_id for m in g.user.likes]
-    message_id = request.form['hidden_message_id']
-    like = Like.query.get(Like.message_id)
+    return render_template("/users/likes.html", user=g.user)
 
-    # check if user has liked message
-    if message_id in message_ids:
-        #remove it
-        db.session.delete(like)
-        db.session.commit()
 
-    # else add message
-    else: 
-        new_like = Like(user_id=g.user.id, message_id=message_id)
-        db.session.add(new_like)
-        db.session.commit()
-    
-    return redirect('/users/{user_id}>/likes')
 
 ##############################################################################
 # Messages routes:
@@ -336,6 +321,38 @@ def messages_destroy(message_id):
     db.session.commit()
 
     return redirect(f"/users/{g.user.id}")
+
+
+@app.route('/messages/<int:message_id>/likes', methods=["POST"])
+def handles_likes(message_id):
+    """ Will add or remove likes from message. """
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+  
+    curr_message = Message.query.get(message_id)
+
+    return render_template(f'/users/{g.user.id}/likes', liked_message=curr_message)
+
+    # message_ids = [m.message_id for m in g.user.likes]
+    # message_id = request.form['hidden_message_id']
+    # like = Like.query.get(Like.message_id)
+
+    # # check if user has liked message
+    # if message_id in message_ids:
+    #     #remove it
+    #     db.session.delete(like)
+    #     db.session.commit()
+
+    # # else add message
+    # else: 
+    #     new_like = Like(user_id=g.user.id, message_id=message_id)
+    #     db.session.add(new_like)
+    #     db.session.commit()
+    
+    # return redirect('/users/{user_id}>/likes')
+
 
 
 ##############################################################################

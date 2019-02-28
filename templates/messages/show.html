@@ -14,9 +14,8 @@
             <div class="message-heading">
               <a href="/users/{{ message.user.id }}">@{{ message.user.username }}</a>
               {% if g.user %}
-                {% if like.user_id == g.user.id and message.user_ud != g.user.id %}
+                {% if message.is_liked_by(g.user.id) %}
                 <form method="POST" action="/users/{{ g.user.id }}/likes">
-                  <input type="hidden" id="hidden-message-id" name="hidden_message_id" value="{{ message.id }}">
                   <button class="btn btn-outline-primary btn-sm"><i class="fas fa-smile"></i></button>
                 </form>
                 {% else %}
