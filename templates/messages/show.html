@@ -14,14 +14,16 @@
             <div class="message-heading">
               <a href="/users/{{ message.user.id }}">@{{ message.user.username }}</a>
               {% if g.user %}
-                {% if message.is_liked_by(g.user) %}
-                <form method="POST" action="/messages/{{ message.id }}/likes">
-                  <button class="btn btn-outline-primary btn-sm"><i class="fas fa-smile"></i></button>
-                </form>
-                {% else %}
-                <form method="POST" action="/messages/{{ message.id }}/likes">
-                  <button class="btn btn-outline-primary btn-sm"><i class="far fa-frown"></i></button>
-                </form>
+                {% if message.user.id != g.user.id %}
+                  {% if message.is_liked_by(g.user) %}
+                  <form method="POST" action="/messages/{{ message.id }}/likes">
+                    <button class="btn btn-outline-primary btn-sm"><i class="fas fa-smile"></i></button>
+                  </form>
+                  {% else %}
+                  <form method="POST" action="/messages/{{ message.id }}/likes">
+                    <button class="btn btn-outline-primary btn-sm"><i class="far fa-frown"></i></button>
+                  </form>
+                  {% endif %}
                 {% endif %}
                 {% if g.user.id == message.user.id %}
                   <form method="POST"
