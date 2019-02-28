@@ -167,6 +167,12 @@ class Message(db.Model):
         nullable=False,
     )
 
+    def is_liked_by(self, curr_user):
+        """Is a message liked by `user`?"""
+
+        liked_list = [like for like in self.likes if like.user_id == curr_user.id]
+        return len(liked_list) == 1
+
 
 class Like(db.Model):
     """ An individual 'like'. """
@@ -190,11 +196,6 @@ class Like(db.Model):
         nullable=False,
     )
 
-    def is_liked_by(self, curr_user):
-        """Is a message liked by `user`?"""
-
-        liked_list = [like for like in self.likes if like.user_id == curr_user.id]
-        return len(liked_list) == 1
 
 
 def connect_db(app):
