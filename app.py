@@ -153,7 +153,7 @@ def users_show(user_id):
                 .order_by(Message.timestamp.desc())
                 .limit(100)
                 .all())
-  
+
     session['redirect_to'] = f'/users/{user_id}'
 
     return render_template('users/show.html',
@@ -275,9 +275,9 @@ def show_liked_messages(user_id):
     return render_template("/users/likes.html", user=g.user)
 
 
-
 ##############################################################################
 # Messages routes:
+
 
 @app.route('/messages/new', methods=["GET", "POST"])
 def messages_add():
@@ -337,7 +337,8 @@ def handles_likes(message_id):
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    like = Like.query.filter_by(user_id=g.user.id, message_id=message_id).first()
+    like = Like.query.filter_by(user_id=g.user.id,
+                                message_id=message_id).first()
 
     if like:
         db.session.delete(like)
@@ -349,7 +350,6 @@ def handles_likes(message_id):
         db.session.commit()
 
     return redirect(session['redirect_to'])
-
 
 
 ##############################################################################
