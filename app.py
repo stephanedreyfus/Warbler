@@ -153,6 +153,8 @@ def users_show(user_id):
                 .order_by(Message.timestamp.desc())
                 .limit(100)
                 .all())
+  
+    session['redirect_to'] = f'/users/{user_id}'
 
     return render_template('users/show.html',
                            user=user,
@@ -268,6 +270,8 @@ def show_liked_messages(user_id):
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
+    session['redirect_to'] = f'/users/{user_id}/likes'
+
     return render_template("/users/likes.html", user=g.user)
 
 
@@ -301,6 +305,8 @@ def messages_add():
 @app.route('/messages/<int:message_id>', methods=["GET"])
 def messages_show(message_id):
     """Show a message."""
+
+    session['redirect_to'] = f'/messages/{message_id}'
 
     like = Like.query.get(message_id)
 
@@ -342,7 +348,7 @@ def handles_likes(message_id):
         db.session.add(new_like)
         db.session.commit()
 
-    return redirect(f"/users/{g.user.id}/likes")
+    return redirect(session['redirect_to'])
 
 
 
@@ -359,6 +365,9 @@ def homepage():
     """
 
     if g.user:
+        session['redirect_to'] = '/'
+        # import pdb; pdb.set_trace()
+
         following_ids = [f.id for f in g.user.following] + [g.user.id]
 
         messages = (Message
