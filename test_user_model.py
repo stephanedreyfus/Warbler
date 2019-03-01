@@ -127,7 +127,7 @@ class UserModelTestCase(TestCase):
         self.assertEqual(u1.is_following(u2), False)
 
     def test_is_followed_by(self):
-        """ Can user1 follow user2? """
+        """ Is user1 followed by user2? """
 
         u1 = User(
             id=10000,
@@ -155,9 +155,7 @@ class UserModelTestCase(TestCase):
         db.session.add(follow)
         db.session.commit()
 
-        self.assertEqual(u1.is_following(u2), True)
-
-######################
+        self.assertEqual(u2.is_followed_by(u1), True)
 
     def test_is_not_followed_by(self):
         """ Confirm user1 is NOT following user2. """
@@ -180,4 +178,4 @@ class UserModelTestCase(TestCase):
         db.session.add(u2)
         db.session.commit()
 
-        self.assertEqual(u1.is_following(u2), False)
+        self.assertEqual(u2.is_followed_by(u1), False)
