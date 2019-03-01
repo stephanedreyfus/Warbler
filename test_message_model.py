@@ -43,6 +43,8 @@ class MessageModelTestCase(TestCase):
         self.client = app.test_client()
 
     def test_message_model(self):
+        """ Test basic functionality of message model. """
+
         t = Message(id=10000,
                     text="Something about Mexican food.",
                     user_id=10000,
@@ -54,3 +56,16 @@ class MessageModelTestCase(TestCase):
         self.assertEqual(t.id, 10000)
         self.assertEqual(t.text, "Something about Mexican food.")
         self.assertEqual(t.user_id, 10000)
+
+    # def test_msg_repr(self):
+    #     """ Does repr appear properly?"""
+
+    #     t = Message(id=10000,
+    #                 text="Something about Mexican food.",
+    #                 user_id=10000,
+    #                 )
+
+    #     db.session.add(t)
+    #     db.session.commit()
+
+    #     self.assertEqual(repr(t), f'<Message #10000: Something about Mexican food., {t.timestamp}, 10000>')
