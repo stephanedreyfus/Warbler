@@ -285,6 +285,7 @@ nav + .container {
 
 #like-btns {
   z-index: 2;
+  margin-left: auto;
 }
 
 #sidebar-username {

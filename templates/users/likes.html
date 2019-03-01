@@ -19,11 +19,11 @@
                 {% if like.message.user.id != g.user.id %}
                   {% if like.message.is_liked_by(g.user) %}
                     <form method="POST" action="/messages/{{ like.message.id }}/likes">
-                      <button class="btn btn-outline-primary btn-sm"><i class="fas fa-smile"></i></button>
+                      <button class="btn btn-outline-primary btn-sm" id="like-btn"><i class="fas fa-smile"></i></button>
                     </form>
                   {% else %}
                     <form method="POST" action="/messages/{{ like.message.id }}/likes">
-                      <button class="btn btn-outline-primary btn-sm"><i class="far fa-frown"></i></button>
+                      <button class="btn btn-outline-primary btn-sm" id="like-btn"><i class="far fa-frown"></i></button>
                     </form>
                   {% endif %}
                 {% endif %}
