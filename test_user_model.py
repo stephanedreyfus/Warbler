@@ -61,7 +61,7 @@ class UserModelTestCase(TestCase):
         """ Does repr return correct values? """
 
         u = User(
-            id = 10000,
+            id=10000,
             email="test@test.com",
             username="testuser",
             password="HASHED_PASSWORD"
