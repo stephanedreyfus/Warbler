@@ -56,7 +56,7 @@ class UserModelTestCase(TestCase):
         # User should have no messages & no followers
         self.assertEqual(len(u.messages), 0)
         self.assertEqual(len(u.followers), 0)
-    
+
     def test_user_model_repr(self):
         """ Does repr return correct values? """
 
@@ -71,3 +71,113 @@ class UserModelTestCase(TestCase):
         db.session.commit()
 
         self.assertEqual(repr(u), '<User #10000: testuser, test@test.com>')
+
+    def test_is_following(self):
+        """ Can user1 follow user2? """
+
+        u1 = User(
+            id=10000,
+            email="user1@test.com",
+            username="user1",
+            password="HASHED_PASSWORD"
+        )
+
+        u2 = User(
+            id=15000,
+            email="user2@test.com",
+            username="user2",
+            password="HASHED_PASSWORD"
+        )
+
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.commit()
+
+        follow = FollowersFollowee(
+            followee_id=10000,
+            follower_id=15000,
+        )
+
+        db.session.add(follow)
+        db.session.commit()
+
+        self.assertEqual(u1.is_following(u2), True)
+
+    def test_is_not_following(self):
+        """ Confirm user1 is NOT following user2. """
+
+        u1 = User(
+            id=10000,
+            email="user1@test.com",
+            username="user1",
+            password="HASHED_PASSWORD"
+        )
+
+        u2 = User(
+            id=15000,
+            email="user2@test.com",
+            username="user2",
+            password="HASHED_PASSWORD"
+        )
+
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.commit()
+
+        self.assertEqual(u1.is_following(u2), False)
+
+    def test_is_followed_by(self):
+        """ Can user1 follow user2? """
+
+        u1 = User(
+            id=10000,
+            email="user1@test.com",
+            username="user1",
+            password="HASHED_PASSWORD"
+        )
+
+        u2 = User(
+            id=15000,
+            email="user2@test.com",
+            username="user2",
+            password="HASHED_PASSWORD"
+        )
+
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.commit()
+
+        follow = FollowersFollowee(
+            followee_id=10000,
+            follower_id=15000,
+        )
+
+        db.session.add(follow)
+        db.session.commit()
+
+        self.assertEqual(u1.is_following(u2), True)
+
+######################
+
+    def test_is_not_followed_by(self):
+        """ Confirm user1 is NOT following user2. """
+
+        u1 = User(
+            id=10000,
+            email="user1@test.com",
+            username="user1",
+            password="HASHED_PASSWORD"
+        )
+
+        u2 = User(
+            id=15000,
+            email="user2@test.com",
+            username="user2",
+            password="HASHED_PASSWORD"
+        )
+
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.commit()
+
+        self.assertEqual(u1.is_following(u2), False)
