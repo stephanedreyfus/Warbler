@@ -6,8 +6,9 @@
 
 
 import os
-from unittest import TestCase
 
+from unittest import TestCase
+from sqlalchemy.exc import IntegrityError
 from models import db, User, Message, FollowersFollowee
 
 # BEFORE we import our app, let's set an environmental variable
@@ -35,6 +36,7 @@ class UserModelTestCase(TestCase):
     def setUp(self):
         """Create test client, add sample data."""
 
+        db.session.rollback()
         User.query.delete()
         Message.query.delete()
         FollowersFollowee.query.delete()
@@ -179,3 +181,60 @@ class UserModelTestCase(TestCase):
         db.session.commit()
 
         self.assertEqual(u2.is_followed_by(u1), False)
+
+    def test_user_create(self):
+        """ Is the user instance properly created? """
+
+        u1 = User(
+            id=10000,
+            email="user1@test.com",
+            username="user1",
+            password="HASHED_PASSWORD"
+        )
+
+        db.session.add(u1)
+        db.session.commit()
+
+        self.assertEqual(u1.id, 10000)
+        self.assertEqual(u1.email, "user1@test.com")
+        self.assertEqual(u1.username, "user1")
+        self.assertEqual(u1.password, "HASHED_PASSWORD")
+
+    def test_user_create_invalid(self):
+        """ If user instance is passed invalid values, no user is created. """
+
+        u1 = User(
+            id=50000,
+            email=None,
+            username="user1",
+            password="HASH"
+        )
+
+        db.session.add(u1)
+
+        self.assertRaises(IntegrityError, db.session.commit)
+        # db.session.commit()
+
+        # self.assertEqual(User.query.get(50000), None)
+
+        # learn to assert.assertRaises
+
+
+
+        # your transaction is now "fouled"
+        # db.session.rollback()   # automatically does something like db.session.begin()
+
+    # def test_user_authenticate(self):
+    #     """ Does authenticate return a user when given valid input? """
+
+    #     u1 = User(
+    #         id=10000,
+    #         email="user1@test.com",
+    #         username="user1",
+    #         password="HASHED_PASSWORD"
+    #     )
+
+    #     db.session.add(u1)
+    #     db.session.commit()
+
+    #     self.assertEqual(u1.authenticate("user1", "HASHED_PASSWORD"), u1)
