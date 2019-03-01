@@ -351,7 +351,6 @@ def handles_likes(message_id):
 
     return redirect(session['redirect_to'])
 
-
 ##############################################################################
 # Homepage and error pages
 
