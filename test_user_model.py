@@ -10,6 +10,7 @@ import os
 from unittest import TestCase
 from sqlalchemy.exc import IntegrityError
 from models import db, User, Message, FollowersFollowee
+from flask_bcrypt import Bcrypt
 
 # BEFORE we import our app, let's set an environmental variable
 # to use a different database for tests (we need to do this
@@ -213,18 +214,27 @@ class UserModelTestCase(TestCase):
         db.session.add(u1)
 
         self.assertRaises(IntegrityError, db.session.commit)
-        # db.session.commit()
+        db.session.rollback()
+        self.assertEqual(User.query.get(50000), None)
 
-        # self.assertEqual(User.query.get(50000), None)
+############################################################################
 
-        # learn to assert.assertRaises
+    def test_user_authenticate(self):
+        """ Does authenticate return a user when given valid input? """
 
+        u1 = User.signup(
+            email="user1@test.com",
+            username="user1",
+            password="taco",
+            image_url="quesadilla"
+        )
 
+        db.session.add(u1)
+        db.session.commit()
 
-        # your transaction is now "fouled"
-        # db.session.rollback()   # automatically does something like db.session.begin()
+        self.assertEqual(u1.authenticate("user1", "taco"), u1)
 
-    # def test_user_authenticate(self):
+    # def test_user_auth_username_fail(self):
     #     """ Does authenticate return a user when given valid input? """
 
     #     u1 = User(
@@ -237,4 +247,20 @@ class UserModelTestCase(TestCase):
     #     db.session.add(u1)
     #     db.session.commit()
 
-    #     self.assertEqual(u1.authenticate("user1", "HASHED_PASSWORD"), u1)
+    #     self.assertEqual(u1.authenticate("u2", "HASHED_PASSWORD"), u1)
+
+    # def test_user_auth_pwd_fail(self):
+    #     """ Does authenticate return a user when given valid input? """
+
+    #     u1 = User(
+    #         id=10000,
+    #         email="user1@test.com",
+    #         username="user1",
+    #         password="HASHED_PASSWORD"
+    #     )
+
+    #     db.session.add(u1)
+    #     db.session.commit()
+
+    #     self.assertEqual(u1.authenticate("user1", "taco"), u1)
+

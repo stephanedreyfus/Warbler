@@ -170,7 +170,8 @@ class Message(db.Model):
     )
 
     def __repr__(self):
-        return f"<Message #{self.id}: {self.text}, {self.timestamp}, {self.user_id}>"
+        return f"""<Message #{self.id}: {self.text},
+        {self.timestamp}, {self.user_id}>"""
 
     def is_liked_by(self, curr_user):
         """Is a message liked by `user`?"""
