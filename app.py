@@ -255,6 +255,16 @@ def delete_user():
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
+    likes = g.user.likes
+    for like in likes:
+        db.session.delete(like)
+    db.session.commit()
+
+    messages = g.user.messages
+    for message in messages:
+        db.session.delete(message)
+    db.session.commit()
+
     do_logout()
 
     db.session.delete(g.user)

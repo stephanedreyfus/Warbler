@@ -165,7 +165,7 @@ class Message(db.Model):
 
     user_id = db.Column(
         db.Integer,
-        db.ForeignKey('users.id', ondelete='CASCADE'),
+        db.ForeignKey('users.id', ondelete="cascade"),
         nullable=False,
     )
 
@@ -193,13 +193,13 @@ class Like(db.Model):
 
     user_id = db.Column(
         db.Integer,
-        db.ForeignKey('users.id', ondelete='CASCADE'),
+        db.ForeignKey('users.id', ondelete="cascade"),
         nullable=False,
     )
 
     message_id = db.Column(
         db.Integer,
-        db.ForeignKey('messages.id', ondelete='CASCADE'),
+        db.ForeignKey('messages.id', ondelete="cascade"),
         nullable=False,
     )
 
