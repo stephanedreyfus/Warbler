@@ -217,8 +217,6 @@ class UserModelTestCase(TestCase):
         db.session.rollback()
         self.assertEqual(User.query.get(50000), None)
 
-############################################################################
-
     def test_user_authenticate(self):
         """ Does authenticate return a user when given valid input? """
 
