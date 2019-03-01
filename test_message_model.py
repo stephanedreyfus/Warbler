@@ -31,6 +31,7 @@ class MessageModelTestCase(TestCase):
         FollowersFollowee.query.delete()
 
         u = User(
+            id=10000,
             email="test@test.com",
             username="testuser",
             password="HASHED_PASSWORD"
