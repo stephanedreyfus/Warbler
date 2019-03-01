@@ -234,33 +234,32 @@ class UserModelTestCase(TestCase):
 
         self.assertEqual(u1.authenticate("user1", "taco"), u1)
 
-    # def test_user_auth_username_fail(self):
-    #     """ Does authenticate return a user when given valid input? """
+    def test_user_auth_username_fail(self):
+        """ Does authenticate return a user when given valid input? """
 
-    #     u1 = User(
-    #         id=10000,
-    #         email="user1@test.com",
-    #         username="user1",
-    #         password="HASHED_PASSWORD"
-    #     )
+        u1 = User.signup(
+            email="user1@test.com",
+            username="user1",
+            password="taco",
+            image_url="quesadilla"
+        )
 
-    #     db.session.add(u1)
-    #     db.session.commit()
+        db.session.add(u1)
+        db.session.commit()
 
-    #     self.assertEqual(u1.authenticate("u2", "HASHED_PASSWORD"), u1)
+        self.assertEqual(u1.authenticate("u2", "taco"), False)
 
-    # def test_user_auth_pwd_fail(self):
-    #     """ Does authenticate return a user when given valid input? """
+    def test_user_auth_pwd_fail(self):
+        """ Does authenticate return a user when given valid input? """
 
-    #     u1 = User(
-    #         id=10000,
-    #         email="user1@test.com",
-    #         username="user1",
-    #         password="HASHED_PASSWORD"
-    #     )
+        u1 = User.signup(
+            email="user1@test.com",
+            username="user1",
+            password="taco",
+            image_url="quesadilla"
+        )
 
-    #     db.session.add(u1)
-    #     db.session.commit()
+        db.session.add(u1)
+        db.session.commit()
 
-    #     self.assertEqual(u1.authenticate("user1", "taco"), u1)
-
+        self.assertEqual(u1.authenticate("user1", "burrito"), False)
