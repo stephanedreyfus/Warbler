@@ -56,3 +56,18 @@ class UserModelTestCase(TestCase):
         # User should have no messages & no followers
         self.assertEqual(len(u.messages), 0)
         self.assertEqual(len(u.followers), 0)
+    
+    def test_user_model_repr(self):
+        """ Does repr return correct values? """
+
+        u = User(
+            id = 10000,
+            email="test@test.com",
+            username="testuser",
+            password="HASHED_PASSWORD"
+        )
+
+        db.session.add(u)
+        db.session.commit()
+
+        self.assertEqual(repr(u), '<User #10000: testuser, test@test.com>')
