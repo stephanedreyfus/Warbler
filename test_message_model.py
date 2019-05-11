@@ -1,20 +1,17 @@
 """Message model tests."""
 
-# run these tests like:
+# run tests from terminal with:
 #
 #    python -m unittest test_user_model.py
 
 
 import os
+from app import app
 
 from unittest import TestCase
-from sqlalchemy.exc import IntegrityError
 from models import db, User, Message, FollowersFollowee
-from flask_bcrypt import Bcrypt
 
 os.environ['DATABASE_URL'] = "postgresql:///warbler-test"
-
-from app import app
 
 db.create_all()
 
@@ -56,16 +53,3 @@ class MessageModelTestCase(TestCase):
         self.assertEqual(t.id, 10000)
         self.assertEqual(t.text, "Something about Mexican food.")
         self.assertEqual(t.user_id, 10000)
-
-    # def test_msg_repr(self):
-    #     """ Does repr appear properly?"""
-
-    #     t = Message(id=10000,
-    #                 text="Something about Mexican food.",
-    #                 user_id=10000,
-    #                 )
-
-    #     db.session.add(t)
-    #     db.session.commit()
-
-    #     self.assertEqual(repr(t), f'<Message #10000: Something about Mexican food., {t.timestamp}, 10000>')
